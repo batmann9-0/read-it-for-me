@@ -18,7 +18,13 @@ safety rules live in the app. Run it on a machine that holds the key:
     BRIDGE_CONNECTOR=custom.gemini-app python scripts/bridge_proxy.py
 
 Env: BRIDGE_TOKEN (shared secret, checked via x-bridge-token header),
-BRIDGE_PORT (default 5682), GEMINI_MODEL (default gemini-3.5-flash).
+BRIDGE_PORT (default 5682), GEMINI_MODEL (primary model, default
+gemini-3.5-flash-lite). The bridge tries the primary model first, then
+gemini-3.1-flash-lite, then gemini-3.5-flash — benchmarked 2026-11-24:
+the lite models answer in ~3-8s with identical extraction accuracy,
+while gemini-3.5-flash takes 14-27s and sometimes stalls past 60s.
+NOTE: do NOT send thinkingConfig — on the lite models it caused
+intermittent 60s+ hangs (and HTTP 400 on gemini-3.5-flash-lite).
 Expose it to the internet through a tunnel + webhook forwarder (the
 reference deployment uses the existing ngrok domain + an n8n webhook
 workflow named "ReadIt Bridge", path /webhook/readit-analyze).
@@ -36,8 +42,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 TOKEN = os.environ.get("BRIDGE_TOKEN", "")
 PORT = int(os.environ.get("BRIDGE_PORT", "5682"))
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
+PRIMARY_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
+# Fast-first fallback chain (see module docstring for the benchmarks).
+MODELS = list(dict.fromkeys([PRIMARY_MODEL, "gemini-3.1-flash-lite", "gemini-3.5-flash"]))
 CONNECTOR = os.environ.get("BRIDGE_CONNECTOR", "")
+UPSTREAM_TIMEOUT = 35  # seconds per model attempt
 
 
 def _apply_auth(req: urllib.request.Request) -> None:
@@ -80,7 +89,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        self._json(200, {"ok": True, "service": "readit-bridge", "model": MODEL})
+        self._json(200, {"ok": True, "service": "readit-bridge", "model": PRIMARY_MODEL, "fallbacks": MODELS[1:]})
 
     def do_POST(self):
         if self.path.rstrip("/") != "/analyze":
@@ -102,29 +111,36 @@ class Handler(BaseHTTPRequestHandler):
                 {"inline_data": {"mime_type": match.group(1), "data": match.group(2)}},
                 {"text": prompt},
             ]}],
-            "generationConfig": {"temperature": 0.1, "responseMimeType": "application/json", "thinkingConfig": {"thinkingBudget": 0}},
+            # No thinkingConfig: it stalls the lite models (see docstring).
+            "generationConfig": {"temperature": 0.1, "responseMimeType": "application/json"},
         }
-        req = urllib.request.Request(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
-            data=json.dumps(payload).encode(),
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-        try:
-            _apply_auth(req)
-            with urllib.request.urlopen(req, timeout=120) as resp:
-                data = json.loads(_read_body(resp).decode())
-        except urllib.error.HTTPError as exc:
-            return self._json(502, {"error": f"Gemini API failed with status {exc.code}"})
-        except Exception as exc:
-            return self._json(502, {"error": f"bridge upstream error: {type(exc).__name__}"})
-        text = (
-            (((data.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [{}])[0]
-            .get("text", "")
-        )
-        if not text:
-            return self._json(502, {"error": "model returned no text"})
-        self._json(200, {"text": text})
+        last_error = "no model attempted"
+        for model in MODELS:
+            req = urllib.request.Request(
+                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                data=json.dumps(payload).encode(),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            try:
+                _apply_auth(req)
+                with urllib.request.urlopen(req, timeout=UPSTREAM_TIMEOUT) as resp:
+                    data = json.loads(_read_body(resp).decode())
+            except urllib.error.HTTPError as exc:
+                last_error = f"{model}: HTTP {exc.code}"
+                continue
+            except Exception as exc:
+                last_error = f"{model}: {type(exc).__name__}"
+                continue
+            text = (
+                (((data.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [{}])[0]
+                .get("text", "")
+            )
+            if not text:
+                last_error = f"{model}: empty reply"
+                continue
+            return self._json(200, {"text": text, "model": model})
+        self._json(502, {"error": f"all models failed ({last_error})"})
 
 
 if __name__ == "__main__":

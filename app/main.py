@@ -84,7 +84,7 @@ async def health() -> HealthResponse:
     settings = get_settings()
     model_label = settings.model
     if settings.vision_bridge_url:
-        model_label = "gemini-3.5-flash (via bridge)"
+        model_label = "gemini-3.5-flash-lite (via bridge)"
     return HealthResponse(
         status="ok" if settings.vision_configured else "vision_not_configured",
         model=model_label,
