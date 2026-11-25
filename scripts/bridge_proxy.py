@@ -102,7 +102,7 @@ class Handler(BaseHTTPRequestHandler):
                 {"inline_data": {"mime_type": match.group(1), "data": match.group(2)}},
                 {"text": prompt},
             ]}],
-            "generationConfig": {"temperature": 0.1},
+            "generationConfig": {"temperature": 0.1, "responseMimeType": "application/json", "thinkingConfig": {"thinkingBudget": 0}},
         }
         req = urllib.request.Request(
             f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",

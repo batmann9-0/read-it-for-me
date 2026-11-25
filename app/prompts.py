@@ -37,6 +37,14 @@ DEFAULT_RETAKE_HINT = {
     Lang.EN: "Move the phone about 20 cm above the paper, hold it steady, and take the photo again.",
 }
 
+# Shown when a photo is imperfect (cropped / glare) but the model still
+# read it with high confidence: the result is delivered, with this caution.
+PARTIAL_PHOTO_WARNING = {
+    Lang.UR: "تصویر کا کچھ حصہ کٹا ہوا یا چمک والا تھا — کوئی بات چھوٹ سکتی ہے۔",
+    Lang.PS: "د عکس یوه برخه پرې شوې یا ځلا وه — کیدای شي یو څه پاتې شوي وي۔",
+    Lang.EN: "Part of the photo was cut off or had glare — something may be missing.",
+}
+
 # Generic spoken error / fallback lines per language.
 GENERIC_ERROR = {
     Lang.UR: "معاف کریں، کچھ مسئلہ ہو گیا ہے۔ براہ کرم پھر سے کوشش کریں۔",
@@ -63,15 +71,20 @@ _RULES_BLOCK = """Rules — follow all of them:
 2. Read ONLY what is printed in the image. Never invent a dose, a schedule, a price, a date, or an instruction. If something is missing or unclear, write "not clearly visible" (translated into the requested language) as its value.
 3. Keep every number, date, name and amount EXACTLY as printed. In the spoken script, write digits clearly so they are read out correctly.
 4. Write plain_explanation and spoken_script in the requested language, in simple everyday words, short sentences, about a grade-5 reading level. No jargon, no legal or financial advice.
-5. Detect the document type:
-   - medicine: a medicine pack, strip, bottle or pharmacy label. key_facts: name, strength, how to take (ONLY if printed), expiry date, manufacturer, warnings printed on the pack. NEVER recommend a dose that is not printed.
-   - bill: electricity, gas, water or mobile bill. key_facts: company, amount due, due date, units used, account or consumer number, late-fee warning if printed. Only restate facts; suggest contacting the issuing office when something is unsure.
-   - notice: an official notice or letter. key_facts: sender, date, what is being asked, deadline, action required. Only restate facts.
-   - other: any other readable document. Summarise its key facts.
-   - unreadable: no document text can be read. Set confidence low.
-6. Judge the photo honestly: if it is blurry, too dark, cropped or has glare, set image_quality to that value, set needs_retake to true, and write a short retake_hint in the requested language (for example: move closer, hold steady, turn on more light, fit the whole page in the frame). When needs_retake is true, the spoken_script must be only the retake hint — do not guess at the content.
-7. If confidence is below 0.6, set needs_retake to true.
-8. extracted_text is the verbatim text you can see, in the document's own language. If you can see no text, use an empty string."""
+5. Detect the document type by its CONTENT, not by the setting or background:
+   - medicine: ANY medicine packaging, strip, bottle, tube or pharmacy label — even partly visible, even held in a hand or lying on a table. Cues: a medicine name with a strength (mg / ml), words like "tablets", "capsules", "syrup", "expiry", a batch number, a manufacturer. key_facts: name, strength, how to take (ONLY if printed), expiry date, manufacturer, warnings printed on the pack. NEVER recommend a dose that is not printed.
+   - bill: ANY electricity, gas, water or mobile bill or receipt. Cues: a company name (PESCO, SNGPL, WSSP, a mobile network), "amount due", "due date", units consumed, a consumer / account / reference number. key_facts: company, amount due, due date, units used, account or consumer number, late-fee warning if printed. Only restate facts; suggest contacting the issuing office when something is unsure.
+   - notice: an official notice, letter, or government / school / office paper. Cues: a letterhead, a sender office, a date, an instruction or a deadline. key_facts: sender, date, what is being asked, deadline, action required. Only restate facts.
+   - other: any other readable document — including LAB REPORTS and doctors' PRESCRIPTIONS, which are very common. For a lab report, key_facts must list the patient, the lab, the date, and every ABNORMAL result first (test name: value, unit, and its normal range), then the other results, up to 10 facts. For a prescription, list the doctor, the date, and each medicine with its printed dose and timing.
+   - unreadable: no document text can be read at all. Set confidence low.
+   Tie-break rule: if any key fact of medicine, bill or notice is present, choose that type — do not choose "other" for a document that contains a medicine name with a strength, an amount due with a due date, or an official sender with a deadline.
+6. Be concise — this is read aloud to a blind user and speed matters:
+   plain_explanation at most 60 words, spoken_script at most 80 words,
+   key_facts at most 10 (most important first). extracted_text is the
+   only long field.
+7. Judge the photo honestly: if it is blurry, too dark, cropped or has glare, set image_quality to that value, set needs_retake to true, and write a short retake_hint in the requested language (for example: move closer, hold steady, turn on more light, fit the whole page in the frame). When needs_retake is true, the spoken_script must be only the retake hint — do not guess at the content.
+8. If confidence is below 0.6, set needs_retake to true.
+9. extracted_text is the verbatim text you can see, in the document's own language. If you can see no text, use an empty string."""
 
 _URDU_STYLE = """Urdu style: use natural, everyday spoken Urdu — the way people talk at home and in the bazaar, not formal or literary Urdu. Use common local words. Do not transliterate English words when a common Urdu word exists (write دوائی not میڈیسن when speaking of medicine in a sentence, بل for the bill amount is fine as people say it). Keep sentences very short."""
 

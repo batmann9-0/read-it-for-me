@@ -24,6 +24,7 @@ from .prompts import (
     CORRECTION_PROMPT,
     DEFAULT_RETAKE_HINT,
     MEDICINE_SAFETY_LINE,
+    PARTIAL_PHOTO_WARNING,
     build_system_prompt,
     build_user_prompt,
 )
@@ -124,24 +125,37 @@ def apply_safety(result: AnalyzeResponse, lang: Lang) -> AnalyzeResponse:
     """Enforce the safety rules on a validated model result, in place.
 
     Rules:
-    * Low confidence or non-good image quality -> ``needs_retake`` and the
-      spoken script becomes the retake hint instead of guessed content.
-    * Unreadable documents always need a retake.
+    * Low confidence, an unreadable document, or no extracted text ->
+      ``needs_retake`` and the spoken script becomes the retake hint
+      instead of guessed content.
+    * A blurry / too-dark photo also needs a retake unless the model is
+      highly confident (>= 0.85) it read the text correctly.
+    * A cropped / glare photo that was still read with confidence is
+      delivered, with a localised "something may be missing" warning —
+      real-world photos are rarely perfect, and refusing them all made
+      the app useless outside the lab (user-reported, 2026-11-24).
     * Medicine results always end their spoken script with the fixed
       pharmacist/doctor safety line in the user's language.
     """
     if not result.retake_hint:
         result.retake_hint = DEFAULT_RETAKE_HINT[lang]
 
-    poor_quality = result.image_quality != ImageQuality.GOOD
     low_confidence = result.confidence < CONFIDENCE_THRESHOLD
-    if poor_quality or low_confidence or result.doc_type == DocType.UNREADABLE:
+    unreadable = result.doc_type == DocType.UNREADABLE or not result.extracted_text.strip()
+    hard_to_read = result.image_quality in (ImageQuality.BLURRY, ImageQuality.TOO_DARK)
+    if low_confidence or unreadable or (hard_to_read and result.confidence < 0.85):
         result.needs_retake = True
 
     if result.needs_retake:
         # Speak the hint, not a guess at the content.
         result.spoken_script = result.retake_hint
         return result
+
+    if result.image_quality != ImageQuality.GOOD:
+        # Delivered despite an imperfect photo: attach the caution.
+        warning = PARTIAL_PHOTO_WARNING[lang]
+        if warning not in result.warnings:
+            result.warnings.append(warning)
 
     if result.doc_type == DocType.MEDICINE:
         line = MEDICINE_SAFETY_LINE[lang]

@@ -5,67 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Read-It-For-Me — میرے لیے پڑھیں</title>
 <meta name="description" content="Photograph a medicine label, bill or official notice. The app reads it and explains it aloud in Urdu, Pashto or English.">
+<meta name="theme-color" content="#0a5c36">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<header class="site-header">
-  <h1 id="app-title">میرے لیے پڑھیں</h1>
-  <p id="app-tagline">دوائی، بل یا نوٹس کی تصویر لیں — ہم پڑھ کر سنائیں گے۔</p>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h5"/></svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name" id="brand-name">Read It For Me</span>
+        <span class="brand-sub" id="app-title">میرے لیے پڑھیں</span>
+      </span>
+    </div>
+    <p class="topbar-note" id="app-tagline">دوائی، بل یا نوٹس کی تصویر لیں — ہم پڑھ کر سنائیں گے۔</p>
+  </div>
 </header>
 
-<main>
-  <!-- Language switcher: three large buttons, each announced and spoken
-       in its own language when activated. -->
-  <section aria-labelledby="lang-heading">
-    <h2 id="lang-heading" class="visually-hidden">Language / زبان / ژبه</h2>
-    <div class="lang-switcher" role="group" aria-label="Language">
-      <button type="button" class="lang-btn" data-lang="ur" lang="ur" dir="rtl" aria-pressed="true">اردو</button>
-      <button type="button" class="lang-btn" data-lang="ps" lang="ps" dir="rtl" aria-pressed="false">پښتو</button>
-      <button type="button" class="lang-btn" data-lang="en" lang="en" dir="ltr" aria-pressed="false">English</button>
+<main class="container">
+
+  <!-- Language -->
+  <section class="section" aria-labelledby="lang-heading">
+    <h2 id="lang-heading" class="section-label">زبان منتخب کریں</h2>
+    <div class="segmented" role="group" aria-label="Language">
+      <button type="button" class="segmented-btn" data-lang="ur" lang="ur" dir="rtl" aria-pressed="true">اردو</button>
+      <button type="button" class="segmented-btn" data-lang="ps" lang="ps" dir="rtl" aria-pressed="false">پښتو</button>
+      <button type="button" class="segmented-btn" data-lang="en" lang="en" dir="ltr" aria-pressed="false">English</button>
     </div>
   </section>
 
-  <!-- Capture: one huge primary button + a gallery option.
-       The file inputs are the real controls (keyboard reachable through
-       their labels); capture="environment" opens the rear camera. -->
-  <section aria-labelledby="capture-heading">
+  <!-- Capture -->
+  <section class="section" aria-labelledby="capture-heading">
     <h2 id="capture-heading" class="visually-hidden">Take a photo</h2>
-    <label class="big-capture" for="camera-input" id="take-photo-label">
-      <span class="big-capture-icon" aria-hidden="true">📷</span>
-      <span id="take-photo-text">تصویر لیں</span>
-    </label>
-    <input id="camera-input" class="file-input" type="file" accept="image/*" capture="environment">
-    <label class="secondary-btn" for="gallery-input" id="gallery-label">
-      <span id="gallery-text">گیلری سے منتخب کریں</span>
-    </label>
-    <input id="gallery-input" class="file-input" type="file" accept="image/*">
-    <p id="capture-guidance" class="guidance">فون کو کاغذ کے تقریباً 20 سینٹی میٹر اوپر رکھیں اور فون کو ہلنے نہ دیں۔</p>
+    <div class="scan-card">
+      <span class="corner corner-tl" aria-hidden="true"></span>
+      <span class="corner corner-tr" aria-hidden="true"></span>
+      <span class="corner corner-bl" aria-hidden="true"></span>
+      <span class="corner corner-br" aria-hidden="true"></span>
+
+      <label class="capture-btn" for="camera-input" id="take-photo-label">
+        <span class="capture-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>
+        </span>
+        <span class="capture-text" id="take-photo-text">تصویر لیں</span>
+        <span class="capture-sub" id="capture-sub">دوائی · بل · سرکاری نوٹس</span>
+      </label>
+      <input id="camera-input" class="file-input" type="file" accept="image/*" capture="environment">
+
+      <div class="scan-divider" aria-hidden="true"><span id="or-text">یا</span></div>
+
+      <label class="gallery-btn" for="gallery-input" id="gallery-label">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span id="gallery-text">گیلری سے منتخب کریں</span>
+      </label>
+      <input id="gallery-input" class="file-input" type="file" accept="image/*">
+
+      <p id="capture-guidance" class="guidance">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span id="guidance-text">فون کو کاغذ کے تقریباً 20 سینٹی میٹر اوپر رکھیں اور فون کو ہلنے نہ دیں۔</span>
+      </p>
+    </div>
   </section>
 
-  <!-- Progress / state, announced to screen readers -->
+  <!-- How it works -->
+  <section class="section" aria-labelledby="how-heading">
+    <h2 id="how-heading" class="section-label">طریقہ کار</h2>
+    <ol class="steps">
+      <li class="step"><span class="step-num" aria-hidden="true">1</span><span class="step-text" id="step1-text">دستاویز کی تصویر لیں</span></li>
+      <li class="step"><span class="step-num" aria-hidden="true">2</span><span class="step-text" id="step2-text">ہم اسے پڑھ کر آسان الفاظ میں سمجھاتے ہیں</span></li>
+      <li class="step"><span class="step-num" aria-hidden="true">3</span><span class="step-text" id="step3-text">نتیجہ آپ کی زبان میں سنایا جاتا ہے</span></li>
+    </ol>
+  </section>
+
+  <!-- Progress -->
   <section aria-labelledby="status-heading">
     <h2 id="status-heading" class="visually-hidden">Status</h2>
-    <div id="progress-wrap" class="progress-wrap" hidden>
-      <progress id="progress" max="100" value="40" aria-label="Working"></progress>
-      <p id="progress-text">آپ کی دستاویز پڑھی جا رہی ہے، براہ کرم انتظار کریں…</p>
+    <div id="progress-wrap" class="progress-card" hidden>
+      <div class="progress-track" role="progressbar" aria-label="Working" aria-busy="true"><span class="progress-bar"></span></div>
+      <p id="progress-text" class="progress-text">آپ کی دستاویز پڑھی جا رہی ہے، براہ کرم انتظار کریں…</p>
     </div>
   </section>
 
-  <!-- Results. aria-live announces every state change and the result. -->
+  <!-- Result -->
   <section aria-labelledby="result-heading">
     <h2 id="result-heading" class="visually-hidden">Result</h2>
     <div id="live-region" class="visually-hidden" aria-live="polite" role="status"></div>
 
     <article id="result-card" class="result-card" hidden tabindex="-1">
-      <p id="result-doc-type" class="doc-type"></p>
-      <div id="result-explanation" class="explanation"></div>
-      <h3 id="key-facts-heading">اہم باتیں</h3>
+      <img id="result-photo" class="result-photo" alt="" width="640" height="220">
+      <div class="result-head">
+        <span id="result-doc-type" class="chip"></span>
+      </div>
+      <p id="result-explanation" class="explanation"></p>
+      <h3 id="key-facts-heading" class="facts-heading">اہم باتیں</h3>
       <dl id="key-facts" class="key-facts"></dl>
       <div id="result-warnings" class="warnings"></div>
-      <details id="extracted-wrap">
+      <details id="extracted-wrap" class="extracted-wrap">
         <summary id="extracted-summary">اصل متن دیکھیں</summary>
         <p id="extracted-text" class="extracted"></p>
       </details>
@@ -74,22 +115,44 @@
     <p id="error-box" class="error-box" role="alert" hidden></p>
   </section>
 
-  <!-- Playback controls: large, labelled, keyboard accessible. -->
+  <!-- Playback -->
   <section aria-labelledby="playback-heading">
     <h2 id="playback-heading" class="visually-hidden">Listening controls</h2>
     <div id="playback" class="playback" hidden>
-      <button type="button" id="btn-playpause" class="control-btn">⏸ روکیں</button>
-      <button type="button" id="btn-repeat" class="control-btn">🔁 دوبارہ سنیں</button>
-      <button type="button" id="btn-slower" class="control-btn">🐢 آہستہ</button>
-      <button type="button" id="btn-faster" class="control-btn">🐇 تیز</button>
-      <button type="button" id="btn-keyfacts" class="control-btn">⭐ صرف اہم باتیں</button>
+      <button type="button" id="btn-playpause" class="control-btn control-primary">
+        <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+        <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" style="display:none"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14Z"/></svg>
+        <span class="control-label" id="label-playpause">روکیں</span>
+      </button>
+      <button type="button" id="btn-repeat" class="control-btn">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+        <span class="control-label" id="label-repeat">دوبارہ سنیں</span>
+      </button>
+      <button type="button" id="btn-slower" class="control-btn">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>
+        <span class="control-label" id="label-slower">آہستہ</span>
+      </button>
+      <button type="button" id="btn-faster" class="control-btn">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="control-label" id="label-faster">تیز</span>
+      </button>
+      <button type="button" id="btn-keyfacts" class="control-btn">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6l1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg>
+        <span class="control-label" id="label-keyfacts">صرف اہم باتیں</span>
+      </button>
     </div>
     <audio id="player" preload="auto"></audio>
+  </section>
+
+  <!-- Privacy strip -->
+  <section class="privacy-strip" aria-label="Privacy">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10Z"/><path d="m9 11.5 2 2 4-4"/></svg>
+    <p id="footer-note">آپ کی تصویر محفوظ نہیں کی جاتی۔ دوائی کھانے سے پہلے فارماسسٹ یا ڈاکٹر سے ضرور پوچھیں۔</p>
   </section>
 </main>
 
 <footer class="site-footer">
-  <p id="footer-note">آپ کی تصویر محفوظ نہیں کی جاتی۔ دوائی کھانے سے پہلے فارماسسٹ یا ڈاکٹر سے ضرور پوچھیں۔</p>
+  <p class="footer-line"><span id="footer-brand">Read It For Me</span> · <span id="footer-place">خیبر پختونخوا، پاکستان</span></p>
 </footer>
 
 <script src="/app.js"></script>

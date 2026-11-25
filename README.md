@@ -144,8 +144,12 @@ check the key facts on screen against the paper.
   Unclear items are reported as "not clearly visible" in the user's language.
 - Medicine: the fixed pharmacist/doctor line is appended **in code** to every spoken
   medicine result, in the user's language.
-- Confidence < 0.6 or image quality ≠ good ⇒ `needs_retake = true` and the app speaks
-  the retake hint instead of guessing.
+- Confidence < 0.6, an unreadable document, or no extracted text ⇒ `needs_retake = true`
+  and the app speaks the retake hint instead of guessing. A blurry/dark photo also
+  retakes unless the model is highly confident (≥ 0.85). An imperfect-but-confident
+  read (cropped/glare) is delivered with a "something may be missing" warning —
+  refined 2026-11-24 after live testing showed the original any-imperfection-retakes
+  rule rejecting real-world photos that had in fact been read correctly.
 - Bills/notices: facts and deadlines only — no legal or financial advice.
 - Per-IP in-memory rate limit; CORS locked to same origin; 8 MB image cap;
   JPEG/PNG/WebP only; 30 s model timeout, 15 s TTS timeout, one retry with backoff.

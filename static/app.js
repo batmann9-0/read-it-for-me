@@ -16,7 +16,14 @@
 const STRINGS = {
   ur: {
     title: "میرے لیے پڑھیں",
+    brandSub: "میرے لیے پڑھیں",
     tagline: "دوائی، بل یا نوٹس کی تصویر لیں — ہم پڑھ کر سنائیں گے۔",
+    langHeading: "زبان منتخب کریں",
+    captureSub: "دوائی · بل · سرکاری نوٹس",
+    orText: "یا",
+    howHeading: "طریقہ کار",
+    steps: ["دستاویز کی تصویر لیں", "ہم اسے پڑھ کر آسان الفاظ میں سمجھاتے ہیں", "نتیجہ آپ کی زبان میں سنایا جاتا ہے"],
+    footerPlace: "خیبر پختونخوا، پاکستان",
     takePhoto: "تصویر لیں",
     gallery: "گیلری سے منتخب کریں",
     guidance: "فون کو کاغذ کے تقریباً 20 سینٹی میٹر اوپر رکھیں اور فون کو ہلنے نہ دیں۔",
@@ -25,22 +32,31 @@ const STRINGS = {
     analyzing: "آپ کی دستاویز پڑھی جا رہی ہے، براہ کرم انتظار کریں…",
     keyFactsHeading: "اہم باتیں",
     showOriginal: "اصل متن دیکھیں",
-    pause: "⏸ روکیں",
-    play: "▶ سنیں",
-    repeat: "🔁 دوبارہ سنیں",
-    slower: "🐢 آہستہ",
-    faster: "🐇 تیز",
-    keyFactsOnly: "⭐ صرف اہم باتیں",
+    pause: "روکیں",
+    play: "سنیں",
+    repeat: "دوبارہ سنیں",
+    slower: "آہستہ",
+    faster: "تیز",
+    keyFactsOnly: "صرف اہم باتیں",
     footer: "آپ کی تصویر محفوظ نہیں کی جاتی۔ دوائی کھانے سے پہلے فارماسسٹ یا ڈاکٹر سے ضرور پوچھیں۔",
     errorGeneric: "معاف کریں، کچھ مسئلہ ہو گیا ہے۔ براہ کرم پھر سے کوشش کریں۔",
     errorNoImage: "تصویر منتخب نہیں ہوئی۔ براہ کرم پھر سے کوشش کریں۔",
     resultReady: "نتیجہ تیار ہے۔",
+    stillReading: "ابھی بھی پڑھا جا رہا ہے، تھوڑا اور انتظار کریں…",
+    photoAlt: "آپ کی لی گئی تصویر",
     retakeReady: "تصویر صاف نہیں آئی۔ نیچے ہدایت سنیں اور پھر سے تصویر لیں۔",
     docTypes: { medicine: "دوائی", bill: "بل", notice: "سرکاری نوٹس", other: "دستاویز", unreadable: "پڑھا نہیں جا سکا" },
   },
   ps: {
     title: "زما لپاره یې ولوله",
+    brandSub: "زما لپاره یې ولوله",
     tagline: "د درملو، بل یا نوټس عکس واخلئ — موږ به یې درته ولولو او وایو به یې۔",
+    langHeading: "ژبه غوره کړئ",
+    captureSub: "درمل · بل · رسمي نوټس",
+    orText: "یا",
+    howHeading: "طریقه",
+    steps: ["د سند عکس واخلئ", "موږ یې لولو او په اسانه ټکو کې یې تشریح کوو", "پایله ستاسو په ژبه کې درته ویل کېږي"],
+    footerPlace: "خیبر پښتونخوا، پاکستان",
     takePhoto: "عکس واخلئ",
     gallery: "له ګالري نه غوره کړئ",
     guidance: "تلیفون د کاغذ نه شاوخوا 20 سانتي متره پورته ونیسئ او تلیفون مه خوځوئ۔",
@@ -49,22 +65,31 @@ const STRINGS = {
     analyzing: "ستاسو سند لوستل کېږي، مهرباني وکړئ انتظار وکړئ…",
     keyFactsHeading: "مهم ټکي",
     showOriginal: "اصلي متن وګورئ",
-    pause: "⏸ ودروئ",
-    play: "▶ واورئ",
-    repeat: "🔁 بیا واورئ",
-    slower: "🐢 ورو",
-    faster: "🐇 ګړندی",
-    keyFactsOnly: "⭐ یوازې مهم ټکي",
+    pause: "ودروئ",
+    play: "واورئ",
+    repeat: "بیا واورئ",
+    slower: "ورو",
+    faster: "ګړندی",
+    keyFactsOnly: "یوازې مهم ټکي",
     footer: "ستاسو عکس نه ساتل کېږي. درمل خوړلو نه مخکې له فارماسسټ یا ډاکټر نه پوښتنه وکړئ۔",
     errorGeneric: "بخښنه غواړم، یوه ستونزه رامنځته شوه۔ مهرباني وکړئ بیا هڅه وکړئ۔",
     errorNoImage: "عکس غوره نه شو۔ مهرباني وکړئ بیا هڅه وکړئ۔",
     resultReady: "پایله تیاره ده۔",
+    stillReading: "اوس هم لوستل کېږي، لږ نور انتظار وکړئ…",
+    photoAlt: "ستاسو اخیستل شوی عکس",
     retakeReady: "عکس ښکاره نه دی راغلی۔ لاندې لارښوونه واورئ او بیا عکس واخلئ۔",
     docTypes: { medicine: "درمل", bill: "بل", notice: "رسمي نوټس", other: "سند", unreadable: "ونه لوستل شو" },
   },
   en: {
     title: "Read It For Me",
+    brandSub: "Reads documents aloud",
     tagline: "Take a photo of a medicine, a bill or a notice — we will read it aloud.",
+    langHeading: "Choose your language",
+    captureSub: "Medicine · Bill · Official notice",
+    orText: "or",
+    howHeading: "How it works",
+    steps: ["Take a photo of the document", "We read it and explain it in simple words", "The result is spoken in your language"],
+    footerPlace: "Khyber Pakhtunkhwa, Pakistan",
     takePhoto: "Take photo",
     gallery: "Choose from gallery",
     guidance: "Hold the phone about 20 cm above the paper, and keep it steady.",
@@ -73,16 +98,18 @@ const STRINGS = {
     analyzing: "Reading your document, please wait…",
     keyFactsHeading: "Key facts",
     showOriginal: "See the original text",
-    pause: "⏸ Pause",
-    play: "▶ Play",
-    repeat: "🔁 Listen again",
-    slower: "🐢 Slower",
-    faster: "🐇 Faster",
-    keyFactsOnly: "⭐ Key facts only",
+    pause: "Pause",
+    play: "Play",
+    repeat: "Listen again",
+    slower: "Slower",
+    faster: "Faster",
+    keyFactsOnly: "Key facts only",
     footer: "Your photo is not saved. Please confirm with a pharmacist or doctor before taking any medicine.",
     errorGeneric: "Sorry, something went wrong. Please try again.",
     errorNoImage: "No photo was chosen. Please try again.",
     resultReady: "Your result is ready.",
+    stillReading: "Still reading — please wait a little more…",
+    photoAlt: "Your photo",
     retakeReady: "The photo was not clear. Listen to the hint below and take the photo again.",
     docTypes: { medicine: "Medicine", bill: "Bill", notice: "Official notice", other: "Document", unreadable: "Could not be read" },
   },
@@ -192,28 +219,36 @@ function applyLanguage(lang, speakName) {
   document.documentElement.lang = lang === "ps" ? "ps" : lang;
   document.documentElement.dir = rtl ? "rtl" : "ltr";
   document.body.classList.toggle("en", !rtl);
-  $("app-title").textContent = s.title;
+  $("app-title").textContent = s.brandSub;
   $("app-tagline").textContent = s.tagline;
+  $("lang-heading").textContent = s.langHeading;
   $("take-photo-text").textContent = s.takePhoto;
+  $("capture-sub").textContent = s.captureSub;
+  $("or-text").textContent = s.orText;
   $("gallery-text").textContent = s.gallery;
-  $("capture-guidance").textContent = s.guidance;
+  $("guidance-text").textContent = s.guidance;
+  $("how-heading").textContent = s.howHeading;
+  $("step1-text").textContent = s.steps[0];
+  $("step2-text").textContent = s.steps[1];
+  $("step3-text").textContent = s.steps[2];
   $("progress-text").textContent = s.analyzing;
   $("key-facts-heading").textContent = s.keyFactsHeading;
   $("extracted-summary").textContent = s.showOriginal;
-  $("btn-repeat").textContent = s.repeat;
-  $("btn-slower").textContent = s.slower;
-  $("btn-faster").textContent = s.faster;
-  $("btn-keyfacts").textContent = s.keyFactsOnly;
+  $("label-repeat").textContent = s.repeat;
+  $("label-slower").textContent = s.slower;
+  $("label-faster").textContent = s.faster;
+  $("label-keyfacts").textContent = s.keyFactsOnly;
   $("footer-note").textContent = s.footer;
+  $("footer-place").textContent = s.footerPlace;
   updatePlayPauseLabel();
-  document.querySelectorAll(".lang-btn").forEach((b) => {
+  document.querySelectorAll(".segmented-btn").forEach((b) => {
     b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
   });
   announce(s.langName);
   if (speakName) { browserSpeak(s.langName, lang, 1); }
 }
 
-document.querySelectorAll(".lang-btn").forEach((btn) => {
+document.querySelectorAll(".segmented-btn").forEach((btn) => {
   btn.addEventListener("click", () => applyLanguage(btn.dataset.lang, true));
 });
 
@@ -257,11 +292,21 @@ function showError(message) {
 
 function hideError() { $("error-box").hidden = true; }
 
+let currentPhotoUrl = null;
+
 function renderResult(result) {
   const s = STRINGS[currentLang];
   lastResult = result;
   const card = $("result-card");
   card.hidden = false;
+  const photo = $("result-photo");
+  if (currentPhotoUrl) {
+    photo.src = currentPhotoUrl;
+    photo.alt = s.photoAlt;
+    photo.hidden = false;
+  } else {
+    photo.hidden = true;
+  }
   const rtl = currentLang !== "en";
   card.setAttribute("dir", rtl ? "rtl" : "ltr");
 
@@ -274,11 +319,14 @@ function renderResult(result) {
   const dl = $("key-facts");
   dl.replaceChildren();
   (result.key_facts || []).forEach((fact) => {
+    const row = document.createElement("div");
+    row.className = "fact-row";
     const dt = document.createElement("dt");
     dt.textContent = fact.label || "";
     const dd = document.createElement("dd");
     dd.textContent = fact.value || "";
-    dl.append(dt, dd);
+    row.append(dt, dd);
+    dl.appendChild(row);
   });
   $("key-facts-heading").hidden = !(result.key_facts && result.key_facts.length);
 
@@ -315,19 +363,33 @@ async function handleFile(file) {
   announce(s.analyzing);
   browserSpeak(s.analyzing, currentLang, 1);
   startTone();
+  if (currentPhotoUrl) { URL.revokeObjectURL(currentPhotoUrl); }
+  currentPhotoUrl = URL.createObjectURL(file);
+  const stillTimer = window.setTimeout(() => {
+    announce(s.stillReading);
+    browserSpeak(s.stillReading, currentLang, 1);
+  }, 12000);
 
   try {
     const blob = await compressImage(file);
     const form = new FormData();
     form.append("image", blob, "photo.jpg");
     form.append("lang", currentLang);
-    const resp = await fetch("/api/analyze", { method: "POST", body: form });
+    const controller = new AbortController();
+    const fetchTimer = window.setTimeout(() => controller.abort(), 75000);
+    let resp;
+    try {
+      resp = await fetch("/api/analyze", { method: "POST", body: form, signal: controller.signal });
+    } finally {
+      window.clearTimeout(fetchTimer);
+    }
     if (!resp.ok) {
       let msg = s.errorGeneric;
       try { const data = await resp.json(); if (data && data.message) { msg = data.message; } } catch (e) { /* keep generic */ }
       throw new Error(msg);
     }
     const result = await resp.json();
+    window.clearTimeout(stillTimer);
     stopTone();
     $("progress-wrap").hidden = true;
     renderResult(result);
@@ -335,9 +397,10 @@ async function handleFile(file) {
     // Auto-play the spoken result (retake hint if a retake is needed).
     await speak(result.spoken_script || result.plain_explanation || result.retake_hint, currentLang);
   } catch (err) {
+    window.clearTimeout(stillTimer);
     stopTone();
     $("progress-wrap").hidden = true;
-    showError(err && err.message ? err.message : s.errorGeneric);
+    showError(err && err.name === "AbortError" ? s.errorGeneric : (err && err.message ? err.message : s.errorGeneric));
   }
 }
 
@@ -360,7 +423,14 @@ $("take-photo-label").addEventListener("click", () => {
 let currentRate = 1.0;
 function updatePlayPauseLabel() {
   const s = STRINGS[currentLang];
-  $("btn-playpause").textContent = player.paused ? s.play : s.pause;
+  const btn = $("btn-playpause");
+  $("label-playpause").textContent = player.paused ? s.play : s.pause;
+  const iconPlay = btn.querySelector(".icon-play");
+  const iconPause = btn.querySelector(".icon-pause");
+  if (iconPlay && iconPause) {
+    iconPlay.style.display = player.paused ? "" : "none";
+    iconPause.style.display = player.paused ? "none" : "";
+  }
 }
 player.addEventListener("play", updatePlayPauseLabel);
 player.addEventListener("pause", updatePlayPauseLabel);

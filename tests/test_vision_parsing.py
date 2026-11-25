@@ -67,11 +67,32 @@ def test_low_confidence_forces_retake_and_speaks_hint():
     assert r.spoken_script == r.retake_hint
 
 
-def test_blurry_image_forces_retake_even_if_model_says_no():
-    data = dict(GOOD_MEDICINE, image_quality="blurry", needs_retake=False)
+def test_blurry_image_with_low_confidence_forces_retake():
+    data = dict(GOOD_MEDICINE, image_quality="blurry", confidence=0.7, needs_retake=False)
     r = apply_safety(parse_model_json(json.dumps(data)), Lang.UR)
     assert r.needs_retake is True
     assert r.spoken_script == r.retake_hint
+
+
+def test_blurry_but_highly_confident_result_is_delivered_with_warning():
+    # Real-world photos are rarely perfect; a confident read is delivered.
+    data = dict(GOOD_MEDICINE, image_quality="blurry", confidence=0.92, needs_retake=False)
+    r = apply_safety(parse_model_json(json.dumps(data)), Lang.EN)
+    assert r.needs_retake is False
+    assert any("glare" in w or "cut off" in w for w in r.warnings)
+
+
+def test_cropped_photo_delivered_with_partial_warning():
+    data = dict(GOOD_MEDICINE, image_quality="cropped", confidence=0.9)
+    r = apply_safety(parse_model_json(json.dumps(data)), Lang.PS)
+    assert r.needs_retake is False
+    assert len(r.warnings) == 1
+
+
+def test_no_extracted_text_forces_retake():
+    data = dict(GOOD_MEDICINE, extracted_text="  ")
+    r = apply_safety(parse_model_json(json.dumps(data)), Lang.EN)
+    assert r.needs_retake is True
 
 
 def test_unreadable_always_retakes():
