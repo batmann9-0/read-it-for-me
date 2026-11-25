@@ -50,6 +50,11 @@
 
 * { box-sizing: border-box; }
 
+/* The hidden attribute must always win over component display rules
+   (e.g. .playback is display:grid — without this, the player showed
+   on the home screen before any result existed). */
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
