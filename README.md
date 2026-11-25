@@ -80,7 +80,11 @@ python scripts/smoke_test.py --image path/to/bill.jpg --lang ps --base-url https
 
 ## Hosted demo (Vercel + Gemini bridge)
 
-The live deployment is the same FastAPI app on Vercel. Because the Gemini API key is
+**Live: https://read-it-for-me.vercel.app** · Code: https://github.com/batmann9-0/read-it-for-me
+
+The live deployment is the same FastAPI app on Vercel (no `vercel.json` needed —
+Vercel's Python framework detection routes to `app/main.py`; explicit rewrites
+to the file path break routing and must not be re-added). Because the Gemini API key is
 held in a secure vault (and a vault placeholder stored in Vercel's env is *not* the
 key), the deployed app is configured with:
 
